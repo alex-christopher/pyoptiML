@@ -15,15 +15,16 @@ class preprocessing:
             if not self.df.empty:
                 self.print("PRINTING DATATYPES")
                 #print(self.df.dtypes)
-                self.float_vals = self.df.select_dtypes(include=['float'])
-                self.int_vals = self.df.select_dtypes(include=['int'])
+                float_vals = self.df.select_dtypes(include=['float'])
+                int_vals = self.df.select_dtypes(include=['int'])
                 #print(self.int_vals.values)
-                return self.int_vals, self.float_vals
+                return int_vals, float_vals
             return
         except Exception as e:
             print("Error occurred in find_datatype function", e)
 
     def splitting_data(self):
+        int_vals, float_vals = self.find_datatype()
         try:
             print(self.df.isna().sum())
             null_columns = self.df.columns[self.df.isna().sum()]
@@ -34,6 +35,5 @@ class preprocessing:
 
 
 pre = preprocessing()
-pre.find_datatype()
 pre.splitting_data()
 #pre.filling_missing_values()
