@@ -17,7 +17,7 @@ class preprocessing:
                 #print(self.df.dtypes)
                 float_vals = self.df.select_dtypes(include=['float'])
                 int_vals = self.df.select_dtypes(include=['int'])
-                #print(self.int_vals.values)
+                print(int_vals.values)
                 return int_vals, float_vals
             return
         except Exception as e:
