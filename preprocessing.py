@@ -17,7 +17,7 @@ class preprocessing:
                 #print(self.df.dtypes)
                 float_vals = self.df.select_dtypes(include=['float'])
                 int_vals = self.df.select_dtypes(include=['int'])
-                print(int_vals.values)
+                #print(int_vals.values)
                 return int_vals, float_vals
             return
         except Exception as e:
@@ -26,9 +26,11 @@ class preprocessing:
     def splitting_data(self):
         int_vals, float_vals = self.find_datatype()
         try:
-            print(self.df.isna().sum())
-            null_columns = self.df.columns[self.df.isna().sum()]
-            print("NULL VALUES AT", null_columns)
+            null_columns = self.df.columns[self.df.isna().any()]
+            for i in null_columns:
+                sum_of_missing_values =  self.df[i].isna().sum()
+                print("NO OF MISSING VALUES : ", sum_of_missing_values)
+                print("No of missing values in '{}' : ".format(i), self.df[i].isna().sum())
         except Exception as e:
             print("SPLITTING DATA FUNCTION", e)
 
