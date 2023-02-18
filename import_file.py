@@ -40,5 +40,5 @@ class data_cleaning:
             window.destroy()
             window.mainloop()
 
-    def print_def(self, text):
+    def print_def(self, text, data=None):
         print("*"*50 + text + "*"*50)
