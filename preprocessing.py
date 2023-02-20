@@ -1,4 +1,5 @@
 import re
+import traceback
 
 import pandas as pd
 import numpy as np
@@ -52,7 +53,7 @@ class preprocessing:
 
         if not categorical_cols.empty:
             self.cat_cols = pd.get_dummies(categorical_cols)
-            #self.cat_cols = self.cat_cols.replace({0 : 1, 1 : 2, np.nan : 0})
+            # self.cat_cols = self.cat_cols.replace({0 : 1, 1 : 2, np.nan : 0})
             print(self.cat_cols)
         else:
             return self.df
@@ -61,23 +62,45 @@ class preprocessing:
         print(self.df)
 
     def cols_with_more_than_one_misisng_values(self):
-        if self.df.isna().any() > 1:
-            cc = self.df.dropna(axis=0)
-            print("cccccccccccccccccccc\n", cc)
+        counter = 0
+        self.df = self.df.reset_index(drop=True)
+        print(self.df.index)
+        print(self.df.columns.tolist())
+        print(self.df.index.values)
+        print(self.df.dtypes)
+        for i in range(len(self.df.index)):
+            print(self.df.index)
+            print(len(self.df.values))
+            print(i)
+            c = self.df.iloc[i].isna().values.sum()
+            if c >= 2:
+                self.df = self.df.dropna(thresh=self.df.shape[1]-1)
+                counter += 1
+            else:
+                return self.df
 
+
+        print(self.df)
+        #print("PLSSSSSSSS", self.new_df)
+        print("COUNTER : ", counter)
+        print("DATA WITH MORE THAN ONE MISSING COLUMN HAS BEEN DROPPED")
+        print("NO OF ROWS DROPPED : ", counter)
+        print("NO OF ROWS REMAINING : ", len(self.df.values) - counter)
+        print("NEW DF \n", self.df)
+        return self.df
 
     def splitting_data(self):
         try:
             int_vals, float_vals = self.find_datatype()
             target = []
+            self.df = self.cols_with_more_than_one_misisng_values()
             for cols in self.null_columns:
 
                 target.append(cols)
                 print("TARGET : ", target)
-
                 training_data = self.df.dropna(axis=0)
                 print("TRAINING DATAAAAAAAAA : \n", training_data)
-                testing_data = self.df[self.df.isna().any(axis=1)]
+                testing_data = self.df.drop(training_data.index)
                 print("TESTING DATAAAAA : \n", testing_data)
 
                 x_train = training_data.drop(target, axis=1)
@@ -107,7 +130,9 @@ class preprocessing:
                 prediction = model.predict(x_val_test)
 
                 R2_score = r2_score(y_val_test, prediction)
+                mse = mean_squared_error(y_val_test, prediction)
                 print("R2 Score for validation dataset : ", R2_score)
+                print("MEAN SQUARED ERROR for validation dataset : ", mse)
 
                 '''HistGrad = HistGradientBoostingRegressor()
                 modelHGB = HistGrad.fit(x_val_train, y_val_train.values.ravel())
@@ -131,21 +156,27 @@ class preprocessing:
 
                 self.print(f"FILLING MISSING VALUES IN COLUMN {cols}")
 
-
                 missing_value_prediction = model.predict(x_test)
                 print("MISSING VALUE TO BE REPLACED : ", missing_value_prediction)
+
+                for i in missing_value_prediction:
+                    if y_test.values == '':
+                        self.df = y_test.replace(i)
+                print("NEW Y TEST \n", self.df)
+                print(f"{target} null values : ", self.df.isna().sum())
 
                 target = []
 
                 # return "END OF NULL VALUES"
 
         except Exception as e:
+            traceback.print_exc()
             print("Splitting data function", e)
 
 
 pre = preprocessing()
-pre.missing_value_data()
 pre.categorical_to_numerical()
-pre.cols_with_more_than_one_misisng_values()
+# pre.cols_with_more_than_one_misisng_values()
+pre.missing_value_data()
 pre.splitting_data()
 # pre.filling_missing_values()
