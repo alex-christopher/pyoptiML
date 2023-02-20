@@ -4,11 +4,16 @@ import os
 
 import tkinter as tk
 from tkinter import filedialog as fd
+import pyfiglet
 
 window = tk.Tk()
 window.withdraw()
 window.update()
 
+text = "Automate ML"
+ascii_art = pyfiglet.figlet_format(text, font="slant")
+
+print(ascii_art)
 
 class data_cleaning:
     def __init__(self):
