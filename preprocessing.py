@@ -121,7 +121,7 @@ class preprocessing:
 
                 x_test = testing_data.drop(target, axis=1)
                 x_test = x_test.dropna(axis=0)
-                y_test = testing_data[target]
+                y_test = testing_data[target].loc[x_test.index]
                 print("X_TEST : \n", x_test, "\nY_TEST\n", y_test)
 
                 lr = LinearRegression()
@@ -159,11 +159,22 @@ class preprocessing:
                 missing_value_prediction = model.predict(x_test)
                 print("MISSING VALUE TO BE REPLACED : ", missing_value_prediction)
 
-                for i in missing_value_prediction:
-                    if y_test.values == '':
-                        self.df = y_test.replace(i)
+                print(y_test)
+                print(y_test.index)
+
+
+
                 print("NEW Y TEST \n", self.df)
                 print(f"{target} null values : ", self.df.isna().sum())
+
+                missing_mask = np.isnan(y_test)
+
+                # Get the predicted values for the missing values
+                predictions = y_test[missing_mask == False]
+
+                # Replace the missing values with the predicted values
+                y_test[missing_mask] = predictions
+
 
                 target = []
 
