@@ -12,7 +12,8 @@ window.update()
 
 text = "Automate ML"
 ascii_art = pyfiglet.figlet_format(text, font="slant")
-
+terminal_width = len(ascii_art.split('\n')[0])
+ascii_art = ascii_art.center(terminal_width)
 print(ascii_art)
 
 class data_cleaning:
