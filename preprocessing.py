@@ -64,24 +64,19 @@ class preprocessing:
     def cols_with_more_than_one_misisng_values(self):
         counter = 0
         self.df = self.df.reset_index(drop=True)
-        print(self.df.index)
-        print(self.df.columns.tolist())
-        print(self.df.index.values)
-        print(self.df.dtypes)
         for i in range(len(self.df.index)):
             print(self.df.index)
             print(len(self.df.values))
             print(i)
             c = self.df.iloc[i].isna().values.sum()
             if c >= 2:
-                self.df = self.df.dropna(thresh=self.df.shape[1]-1)
+                self.df = self.df.dropna(thresh=self.df.shape[1] - 1)
                 counter += 1
             else:
                 return self.df
 
-
         print(self.df)
-        #print("PLSSSSSSSS", self.new_df)
+        # print("PLSSSSSSSS", self.new_df)
         print("COUNTER : ", counter)
         print("DATA WITH MORE THAN ONE MISSING COLUMN HAS BEEN DROPPED")
         print("NO OF ROWS DROPPED : ", counter)
@@ -149,6 +144,7 @@ class preprocessing:
                 R2_score = r2_score(y_val_test, GBR_Pred)
                 mse = mean_squared_error(y_val_test, GBR_Pred)
                 print("R2 : ", R2_score, "\nGBR : ", GBR_Pred)'''
+
                 if R2_score > 0.8:
                     print("MODEL FITTED WELL AND GOOD")
                 elif 0.5 > R2_score < 0.8:
@@ -162,21 +158,31 @@ class preprocessing:
                 print(y_test)
                 print(y_test.index)
 
-
-
                 print("NEW Y TEST \n", self.df)
                 print(f"{target} null values : ", self.df.isna().sum())
 
-                missing_mask = np.isnan(y_test)
+                '''if x_test.index == y_test.index:
+                    for i in x_test.index:
+                        for j in missing_value_prediction:
+                            self.df[target].loc[i] = j'''
+                print(type(missing_value_prediction))
 
-                # Get the predicted values for the missing values
-                predictions = y_test[missing_mask == False]
+                # predicted_series_1d = round(missing_value_prediction, 2)
+                a = missing_value_prediction[0][0]
+                print(missing_value_prediction[0][0])
 
-                # Replace the missing values with the predicted values
-                y_test[missing_mask] = predictions
+                print("BEFORE UPDATION \n", testing_data)
 
+                testing_data[target] = testing_data[target].fillna(a)
+                print("AFTER UPDATION\n", testing_data)
+
+                self.df = pd.concat([training_data, testing_data], axis=0)
+
+                print("PRINT ALL", self.df)
 
                 target = []
+
+                self.cols_with_more_than_one_misisng_values()
 
                 # return "END OF NULL VALUES"
 
