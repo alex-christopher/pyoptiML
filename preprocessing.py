@@ -61,18 +61,17 @@ class preprocessing:
         self.df = pd.concat([numerical_cols, self.cat_cols], axis=1)
         print(self.df)
 
-    def cols_with_more_than_one_misisng_values(self):
+    def cols_with_more_than_one_missisng_values(self):
         counter = 0
         self.df = self.df.reset_index(drop=True)
-        for i in range(len(self.df.index)):
-            print(self.df.index)
+        for i in range(len(self.df.index - 1)):
+            '''print(self.df.index)
             print(len(self.df.values))
-            print(i)
+            print(i)'''
             c = self.df.iloc[i].isna().values.sum()
-            if c >= 2:
-                self.df = self.df.dropna(thresh=self.df.shape[1] - 1)
+            if c > 1:
+                self.df = self.df.dropna(thresh=self.df.shape[1] - 1, axis=0)
                 counter += 1
-            else:
                 return self.df
 
         print(self.df)
@@ -88,7 +87,8 @@ class preprocessing:
         try:
             int_vals, float_vals = self.find_datatype()
             target = []
-            self.df = self.cols_with_more_than_one_misisng_values()
+            self.df = self.cols_with_more_than_one_missisng_values()
+            self.missing_value_data()
             for cols in self.null_columns:
 
                 target.append(cols)
@@ -153,6 +153,9 @@ class preprocessing:
                 self.print(f"FILLING MISSING VALUES IN COLUMN {cols}")
 
                 missing_value_prediction = model.predict(x_test)
+                number_of_decimal_values = len(str(training_data.loc[0, target]).split('.')[1])
+                print(number_of_decimal_values)
+
                 print("MISSING VALUE TO BE REPLACED : ", missing_value_prediction)
 
                 print(y_test)
@@ -161,20 +164,17 @@ class preprocessing:
                 print("NEW Y TEST \n", self.df)
                 print(f"{target} null values : ", self.df.isna().sum())
 
-                '''if x_test.index == y_test.index:
-                    for i in x_test.index:
-                        for j in missing_value_prediction:
-                            self.df[target].loc[i] = j'''
                 print(type(missing_value_prediction))
 
                 # predicted_series_1d = round(missing_value_prediction, 2)
-                a = missing_value_prediction[0][0]
-                print(missing_value_prediction[0][0])
 
-                print("BEFORE UPDATION \n", testing_data)
+                i = 0
+                for j in y_test.index:
+                    print("BEFORE UPDATION \n", testing_data)
+                    testing_data.loc[[j], target] = missing_value_prediction[i]
+                    print("AFTER UPDATION\n", testing_data)
+                    i = i + 1
 
-                testing_data[target] = testing_data[target].fillna(a)
-                print("AFTER UPDATION\n", testing_data)
 
                 self.df = pd.concat([training_data, testing_data], axis=0)
 
@@ -182,7 +182,7 @@ class preprocessing:
 
                 target = []
 
-                self.cols_with_more_than_one_misisng_values()
+                self.cols_with_more_than_one_missisng_values()
 
                 # return "END OF NULL VALUES"
 
@@ -191,9 +191,8 @@ class preprocessing:
             print("Splitting data function", e)
 
 
+
+
 pre = preprocessing()
 pre.categorical_to_numerical()
-# pre.cols_with_more_than_one_misisng_values()
-pre.missing_value_data()
 pre.splitting_data()
-# pre.filling_missing_values()
