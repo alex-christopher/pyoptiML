@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import os
 from import_file import data_cleaning
+import decimal
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
@@ -48,40 +49,46 @@ class preprocessing:
             print("Missing value function", e)
 
     def categorical_to_numerical(self):
-        categorical_cols = self.df.select_dtypes(include='object')
-        numerical_cols = self.df.select_dtypes(exclude='object')
+        try:
+            categorical_cols = self.df.select_dtypes(include='object')
+            numerical_cols = self.df.select_dtypes(exclude='object')
 
-        if not categorical_cols.empty:
-            self.cat_cols = pd.get_dummies(categorical_cols)
-            # self.cat_cols = self.cat_cols.replace({0 : 1, 1 : 2, np.nan : 0})
-            print(self.cat_cols)
-        else:
-            return self.df
-
-        self.df = pd.concat([numerical_cols, self.cat_cols], axis=1)
-        print(self.df)
-
-    def cols_with_more_than_one_missisng_values(self):
-        counter = 0
-        self.df = self.df.reset_index(drop=True)
-        for i in range(len(self.df.index - 1)):
-            '''print(self.df.index)
-            print(len(self.df.values))
-            print(i)'''
-            c = self.df.iloc[i].isna().values.sum()
-            if c > 1:
-                self.df = self.df.dropna(thresh=self.df.shape[1] - 1, axis=0)
-                counter += 1
+            if not categorical_cols.empty:
+                self.cat_cols = pd.get_dummies(categorical_cols)
+                # self.cat_cols = self.cat_cols.replace({0 : 1, 1 : 2, np.nan : 0})
+                print(self.cat_cols)
+            else:
                 return self.df
 
-        print(self.df)
-        # print("PLSSSSSSSS", self.new_df)
-        print("COUNTER : ", counter)
-        print("DATA WITH MORE THAN ONE MISSING COLUMN HAS BEEN DROPPED")
-        print("NO OF ROWS DROPPED : ", counter)
-        print("NO OF ROWS REMAINING : ", len(self.df.values) - counter)
-        print("NEW DF \n", self.df)
-        return self.df
+            self.df = pd.concat([numerical_cols, self.cat_cols], axis=1)
+            print(self.df)
+        except Exception as e:
+            print("ERROR IN CATEGORICAL TO NUMERICAL", e)
+
+    def cols_with_more_than_one_missisng_values(self):
+        try:
+            counter = 0
+            self.df = self.df.reset_index(drop=True)
+            for i in range(len(self.df.index - 1)):
+                '''print(self.df.index)
+                print(len(self.df.values))
+                print(i)'''
+                c = self.df.iloc[i].isna().values.sum()
+                if c > 1:
+                    self.df = self.df.dropna(thresh=self.df.shape[1] - 1, axis=0)
+                    counter += 1
+                    return self.df
+
+            print(self.df)
+            # print("PLSSSSSSSS", self.new_df)
+            print("COUNTER : ", counter)
+            print("DATA WITH MORE THAN ONE MISSING COLUMN HAS BEEN DROPPED")
+            print("NO OF ROWS DROPPED : ", counter)
+            print("NO OF ROWS REMAINING : ", len(self.df.values) - counter)
+            print("NEW DF \n", self.df)
+            return self.df
+        except Exception as e:
+            print("ERROR IN COLS WITH MORE THAN ONE MISSING VALUE", e)
 
     def splitting_data(self):
         try:
@@ -153,7 +160,10 @@ class preprocessing:
                 self.print(f"FILLING MISSING VALUES IN COLUMN {cols}")
 
                 missing_value_prediction = model.predict(x_test)
-                number_of_decimal_values = len(str(training_data.loc[0, target]).split('.')[1])
+                c = self.df[target].loc[0][0]
+                print(c)
+
+                number_of_decimal_values = str(c)[::-1].find('.')
                 print(number_of_decimal_values)
 
                 print("MISSING VALUE TO BE REPLACED : ", missing_value_prediction)
@@ -171,10 +181,9 @@ class preprocessing:
                 i = 0
                 for j in y_test.index:
                     print("BEFORE UPDATION \n", testing_data)
-                    testing_data.loc[[j], target] = missing_value_prediction[i]
+                    testing_data.loc[[j], target] = np.round(missing_value_prediction[i], number_of_decimal_values)
                     print("AFTER UPDATION\n", testing_data)
                     i = i + 1
-
 
                 self.df = pd.concat([training_data, testing_data], axis=0)
 
@@ -189,8 +198,6 @@ class preprocessing:
         except Exception as e:
             traceback.print_exc()
             print("Splitting data function", e)
-
-
 
 
 pre = preprocessing()

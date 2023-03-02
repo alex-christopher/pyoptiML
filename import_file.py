@@ -36,6 +36,8 @@ class data_cleaning:
                     df = pd.read_excel(file_dialog_box.name)
                     print(df)
                     return df
+                window.destroy()
+                window.mainloop()
             else:
                 print("THANK YOU")
                 return False
@@ -43,8 +45,8 @@ class data_cleaning:
             print("Error occurred while importing file", e)
         finally:
             print("IMPORT_FILE MODULE EXECUTED")
-            window.destroy()
-            window.mainloop()
+            #window.destroy()
+            #window.mainloop()
 
     def print_def(self, text, data=None):
         print("*"*50 + text + "*"*50)
