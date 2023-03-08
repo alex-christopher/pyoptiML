@@ -5,10 +5,10 @@ import pandas as pd
 import numpy as np
 import os
 from import_file import data_cleaning
-import decimal
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge
 from sklearn.ensemble import HistGradientBoostingRegressor, HistGradientBoostingClassifier
 from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, r2_score, mean_squared_error
@@ -95,6 +95,7 @@ class preprocessing:
             int_vals, float_vals = self.find_datatype()
             target = []
             self.df = self.cols_with_more_than_one_missisng_values()
+            self.categorical_to_numerical()
             self.missing_value_data()
             for cols in self.null_columns:
 
@@ -106,18 +107,19 @@ class preprocessing:
                 print("TESTING DATAAAAA : \n", testing_data)
 
                 x_train = training_data.drop(target, axis=1)
-                print("X TRAI N : \n", x_train)
+                print("X TRAIN : \n", x_train)
                 y_train = training_data[target]
-                print("Y TRAI N : \n", y_train)
+                print("Y TRAIN : \n", y_train)
 
                 # print("XTRAIN : \n", x_train, "\nYTRAIN : \n", y_train)
                 # print("TRAINING DATA\n", training_data)
                 # print("TESTING DATA\n", testing_data)
 
                 x_val_train, x_val_test, y_val_train, y_val_test = train_test_split(x_train, y_train,
-                                                                                    random_state=42, test_size=0.3)
+                                                                                    test_size=0.3, random_state=42)
 
                 print("X_val_train : \n", x_val_train, "X_val_test : \n", x_val_test)
+                print("Y_val_train : \n", y_val_train, "Y_val_test : \n", y_val_test)
                 print(x_val_train.shape)
                 print(x_val_test.shape)
 
@@ -126,15 +128,18 @@ class preprocessing:
                 y_test = testing_data[target].loc[x_test.index]
                 print("X_TEST : \n", x_test, "\nY_TEST\n", y_test)
 
-                lr = LinearRegression()
+                '''lr = LinearRegression()
+                rid = Ridge()
 
-                model = lr.fit(x_val_train, y_val_train)
-                prediction = model.predict(x_val_test)
+                model_name = f'{target}_model'
+
+                model_name = rid.fit(x_val_train, y_val_train)
+                prediction = model_name.predict(x_val_test)
 
                 R2_score = r2_score(y_val_test, prediction)
                 mse = mean_squared_error(y_val_test, prediction)
                 print("R2 Score for validation dataset : ", R2_score)
-                print("MEAN SQUARED ERROR for validation dataset : ", mse)
+                print("MEAN SQUARED ERROR for validation dataset : ", mse)'''
 
                 '''HistGrad = HistGradientBoostingRegressor()
                 modelHGB = HistGrad.fit(x_val_train, y_val_train.values.ravel())
@@ -145,12 +150,15 @@ class preprocessing:
                 print("R2 : ", R2_score)
                 print("MSE : ", mse)'''
 
-                '''GradBoost = GradientBoostingRegressor()
+                GradBoost = GradientBoostingRegressor(loss='squared_error',
+                                                      learning_rate=0.1,
+                                                      n_estimators=100,
+                                                      random_state=42)
                 modelGBR = GradBoost.fit(x_val_train, y_val_train.values.ravel())
                 GBR_Pred = modelGBR.predict(x_val_test)
                 R2_score = r2_score(y_val_test, GBR_Pred)
                 mse = mean_squared_error(y_val_test, GBR_Pred)
-                print("R2 : ", R2_score, "\nGBR : ", GBR_Pred)'''
+                print("R2 : ", R2_score, "\nGBR : ", GBR_Pred)
 
                 if R2_score > 0.8:
                     print("MODEL FITTED WELL AND GOOD")
@@ -159,7 +167,7 @@ class preprocessing:
 
                 self.print(f"FILLING MISSING VALUES IN COLUMN {cols}")
 
-                missing_value_prediction = model.predict(x_test)
+                missing_value_prediction = modelGBR.predict(x_test)
                 c = self.df[target].loc[0][0]
                 print(c)
 
@@ -193,13 +201,8 @@ class preprocessing:
 
                 self.cols_with_more_than_one_missisng_values()
 
-                # return "END OF NULL VALUES"
+            return self.df
 
         except Exception as e:
             traceback.print_exc()
             print("Splitting data function", e)
-
-
-pre = preprocessing()
-pre.categorical_to_numerical()
-pre.splitting_data()
