@@ -26,7 +26,7 @@ class data_cleaning:
             if import_file.lower() == 'y':
                 file_dialog_box = fd.askopenfile(
                     filetypes=[ ("CSV file", "*.csv"), ("Excel file", "*.xlsx"), ("Excel file", "*.xls")])
-                file_path, file_ext = os.path.splitext(file_dialog_box.name)
+                self.file_path, file_ext = os.path.splitext(file_dialog_box.name)
                 if file_ext == ".csv":
                     df = pd.read_csv(file_dialog_box.name)
                     self.print_def("IMPORTED DATAFRAME")
