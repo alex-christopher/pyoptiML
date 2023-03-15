@@ -31,13 +31,15 @@ class data_cleaning:
                     df = pd.read_csv(file_dialog_box.name)
                     self.print_def("IMPORTED DATAFRAME")
                     print(df)
-                    return df
+                    return df, self.file_path
                 if file_ext == ".xls" or ".xlsx":
                     df = pd.read_excel(file_dialog_box.name)
                     print(df)
-                    return df
+                    return df, self.file_path
                 window.destroy()
                 window.mainloop()
+                return True
+
             else:
                 print("THANK YOU")
                 return False
