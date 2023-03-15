@@ -8,8 +8,14 @@ from savefile import savefile
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
 
-import tqdm
+from sklearn.linear_model import LinearRegression, Ridge, RANSACRegressor, Lasso, ElasticNet
+
+from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
+
+from tqdm import tqdm
+
 sc = StandardScaler()
 
 class model_creation:
@@ -28,23 +34,18 @@ class model_creation:
         else:
             print("FILE NOT SAVED")
 
-    def try_standardization(self):
-        self.df = sc.fit_transform(self.df)
-        standard = pd.DataFrame(self.df)
-        self.new_save("Standardized", standard)
-
     def train_test_split(self):
         for i in self.df.columns:
             print(i)
         target = input("Select the target column : ")
-        while target in self.df.columns:
+        if target in self.df.columns:
             x = self.df.drop(target, axis=1)
             y = self.df[target]
-            x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
+            self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=0.3, random_state=42)
             print("Test size is set to 0.3 by default")
-            training_data = x_train + y_train
+            training_data = pd.concat([self.x_train, self.y_train], axis=1)
             train_data = pd.DataFrame(training_data)
-            testing_data = x_test + y_test
+            testing_data = pd.concat([self.x_test, self.y_test], axis=1)
             test_data = pd.DataFrame(testing_data)
             self.new_save("Train", train_data)
             print("Train data saved")
@@ -54,6 +55,45 @@ class model_creation:
             print("Enter proper column name")
 
 
+    def standardization(self):
+        self.df = sc.fit_transform(self.df)
+        standard = pd.DataFrame(self.df)
+        self.new_save("Standardized", standard)
+
+    def validation_model_generation(self):
+        x_train = sc.fit_transform(self.x_train)
+        x_test = sc.transform(self.x_test)
+
+
+        GradBoost = GradientBoostingRegressor(loss='squared_error',
+                                              learning_rate=0.1,
+                                              n_estimators=100,
+                                              random_state=42)
+        LinearReg = LinearRegression()
+        RidgeReg = Ridge()
+        RANSAC = RANSACRegressor()
+        ElasticNetReg = ElasticNet()
+        LassoReg = Lasso()
+
+
+        models = [GradBoost, LinearReg, RidgeReg, RANSAC,LassoReg, ElasticNetReg]
+
+        for model in models:
+            modelGBR = model.fit(x_train, self.y_train.values.ravel())
+            Prediction = modelGBR.predict(x_test)
+            R2_score = r2_score(self.y_test, Prediction)
+            mse = mean_squared_error(self.y_test, Prediction)
+            print(f"{model}")
+            print("R2 : ", R2_score, "\nMSE : ", mse)
+
+
+    def model_generation(self):
+        x_train = sc.fit_transform(self.x_train)
+        x_test = sc.transform(self.x_test)
+
+
+
 model = model_creation()
 model.train_test_split()
-model.try_standardization()
+model.standardization()
+model.validation_model_generation()
