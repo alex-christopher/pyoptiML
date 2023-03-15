@@ -4,6 +4,7 @@ import traceback
 import pandas as pd
 import numpy as np
 import os
+
 from import_file import data_cleaning
 
 from sklearn.model_selection import train_test_split
@@ -17,21 +18,23 @@ from sklearn.metrics import accuracy_score, r2_score, mean_squared_error
 class preprocessing:
     def __init__(self):
         self.dc = data_cleaning()
-        self.df = self.dc.import_data()
+        self.df, self.file_path = self.dc.import_data()
         self.print = self.dc.print_def
+        #self.save = savefile
 
-    def find_datatype(self):
+    '''def find_datatype(self):
         try:
-            if not self.df.empty:
+            if self.df:
                 self.print("PRINTING DATATYPES")
                 # print(self.df.dtypes)
                 float_vals = self.df.select_dtypes(include=['float'])
                 int_vals = self.df.select_dtypes(include=['int'])
                 # print(int_vals)
                 return int_vals, float_vals
-            return
+
+
         except Exception as e:
-            print("Error occurred in find_datatype function", e)
+            print("Error occurred in find_datatype function", e)'''
 
     def missing_value_data(self):
         # int_vals, float_vals = self.find_datatype()
@@ -92,7 +95,8 @@ class preprocessing:
 
     def splitting_data(self):
         try:
-            int_vals, float_vals = self.find_datatype()
+
+            #int_vals, float_vals = self.find_datatype()
             target = []
             self.df = self.cols_with_more_than_one_missisng_values()
             self.categorical_to_numerical()
@@ -201,8 +205,10 @@ class preprocessing:
 
                 self.cols_with_more_than_one_missisng_values()
 
-            return self.df
+            return self.df, self.file_path
+
 
         except Exception as e:
             traceback.print_exc()
             print("Splitting data function", e)
+
