@@ -26,8 +26,18 @@ class savefile:
             folder_path = os.path.split(self.file_path)[0]
             folder_name = os.path.split(self.file_path)[1]
 
-            complete_path = os.path.join(folder_path, folder_name)
-            os.mkdir(complete_path)
+            i = 0
+            while True:
+                if i == 0:
+                    complete_path = os.path.join(folder_path, folder_name)
+                else:
+                    complete_path = os.path.join(folder_path, f'{folder_name}({i})')
+                if not os.path.exists(complete_path):
+                    os.mkdir(complete_path)
+                    break
+                i += 1
+
+            #os.mkdir(complete_path)
             csv_path = f'Preprocessed_{folder_name}.csv'
             print(csv_path)
 

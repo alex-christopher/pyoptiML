@@ -10,7 +10,7 @@ window = tk.Tk()
 window.withdraw()
 window.update()
 
-text = "Automate ML"
+text = "MODEL GENERATOR"
 ascii_art = pyfiglet.figlet_format(text, font="slant")
 terminal_width = len(ascii_art.split('\n')[0])
 ascii_art = ascii_art.center(terminal_width)
