@@ -12,6 +12,7 @@ Reasons :
     1. Rather than filling with mean, median or mode values this could help to fill the empty values more accurately.
     2. Model with the best accuracy will be used to fill the nan values and so the accuracy increases in filling the missing values
 3. Saving - Saving the files is the most important feature that has been processed. This package asks for yes or no kinda questions to save train data, test data, standardized data and even the model everything will be saved in a new folder that is created from where the data has been selected.
+4. Handled outliers with the help of IQR (Interquaratile Range)
 4. Numerical data are stored in csv files
 5. Models are stored in the same folder so we can just load them to test the accuraccy and can be shared
 6. Testing - After the model has been saved it also asks for testing to the user. So here user can just enter the values and the model predicts the output ie the target feature the model is trained with
@@ -20,7 +21,7 @@ Reasons :
 
 # Where to get it
 
-The source code is currently hosted on Github at : 
+The source code is currently hosted on Github at : https://github.com/alex-christopher/pyoptiML
 
 pip install 
 
@@ -43,7 +44,7 @@ All contributions, bug reports, bug fixes, documentation improvements, enhanceme
 Or maybe through using pandas you have an idea of your own or are looking for something in the documentation and thinking ‘this can be improved’...you can do something about it!
 
 # Features to improve
-Used only 4-5 libraries without hyperparameter tuning for the final model generation.
-Works only for regression problems 
-Works under progress for classification problems
-Auto code generation for all the steps or all the progess that the user has done has to be generated on its own 
+1. Used only 4-5 libraries without hyperparameter tuning for the final model generation.
+2. Works only for regression problems 
+3. Works under progress for classification problems
+4. Auto code generation for all the steps or all the progess that the user has done has to be generated on its own 
