@@ -1,8 +1,8 @@
 Uncomment and make changes as required and use for yml testing
 
- name: Python application
+name: Python application
 
- on:
+on:
    push:
      branches: [ "master" ]
      paths-ignore:
@@ -13,10 +13,10 @@ Uncomment and make changes as required and use for yml testing
          - 'README.md'
 
 
- permissions:
+permissions:
    contents: read
 
- jobs:
+jobs:
    build:
 
      runs-on: ${{ matrix.os }}
