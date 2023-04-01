@@ -3,7 +3,7 @@ tox==3.25.1
 black==22.8.0
 flake8==5.0.4
 mypy==0.971
-numpy==1.24.2
-pandas==1.5.3
-scikit-learn==1.2.2
+numpy==1.24.
+pandas==1.5.
+scikit-learn==1.2.
 -e .
