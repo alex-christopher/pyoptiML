@@ -18,16 +18,17 @@ terminal_width = len(ascii_art.split('\n')[0])
 ascii_art = ascii_art.center(terminal_width)
 print(ascii_art)
 
+
 class data_loading:
     def __init__(self):
-        print("*"*50 +"OPTI ML"+"*"*50)
+        print("*" * 50 + "OPTI ML" + "*" * 50)
 
     def import_data(self):
         try:
             import_file = input("Import file [y/n] : ")
             if import_file.lower() == 'y':
                 file_dialog_box = fd.askopenfile(
-                    filetypes=[ ("CSV file", "*.csv"), ("Excel file", "*.xlsx"), ("Excel file", "*.xls")])
+                    filetypes=[("CSV file", "*.csv"), ("Excel file", "*.xlsx"), ("Excel file", "*.xls")])
                 self.file_path, file_ext = os.path.splitext(file_dialog_box.name)
                 if file_ext == ".csv":
                     df = pd.read_csv(file_dialog_box.name)
@@ -51,8 +52,8 @@ class data_loading:
             print("Error occurred while importing file", e)
         finally:
             print("IMPORT_FILE MODULE EXECUTED")
-            #window.destroy()
-            #window.mainloop()
+            # window.destroy()
+            # window.mainloop()
 
     def print_def(self, text, data=None):
-        print("*"*50 + text + "*"*50)
+        print("*" * 50 + text + "*" * 50)

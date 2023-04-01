@@ -3,7 +3,7 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
-__version__ = "0.0.0"
+__version__ = "0.0.1"
 
 REPO_NAME = "pyoptiML"
 AUTHOR_USER_NAME = "alex-christopher"
@@ -16,7 +16,7 @@ setuptools.setup(
     author=AUTHOR_USER_NAME,
     author_email=AUTHOR_EMAIL,
     description="A Machine Learning python package that can be used to generate model on its own and with the user data",
-    long_description=long_description,
+    long_description="long_description",
     long_description_content="text/markdown",
     url=f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}",
     project_urls={
