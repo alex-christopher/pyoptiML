@@ -1,0 +1,10 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+src/optiML/__init__.py
+src/pyoptiML.egg-info/PKG-INFO
+src/pyoptiML.egg-info/SOURCES.txt
+src/pyoptiML.egg-info/dependency_links.txt
+src/pyoptiML.egg-info/requires.txt
+src/pyoptiML.egg-info/top_level.txt
