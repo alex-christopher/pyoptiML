@@ -9,6 +9,3 @@ class pyoptiML:
         over = test.testing_user_input()
         end = time.time()
         print("------%s seconds------ " % (round(end - start, 2)))
-
-
-opti = pyoptiML()
