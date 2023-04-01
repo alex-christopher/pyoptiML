@@ -20,7 +20,7 @@ print(ascii_art)
 
 class data_loading:
     def __init__(self):
-        print("*"*50 +"AUTOMATED MACHINE LEARNING"+"*"*50)
+        print("*"*50 +"OPTI ML"+"*"*50)
 
     def import_data(self):
         try:

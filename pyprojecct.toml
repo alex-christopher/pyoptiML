@@ -10,3 +10,21 @@ testpaths = [
 [tool.mypy]
 mypy_path = "src"
 ignore_missing_imports = true
+[project]
+name = "alexchristopher"
+version = "0.0.1"
+authors = [
+  { name="Alex Christopher", email="alexchristopher154@gmail.com" },
+]
+description = "A Machine Learning package that is used to build model with the user data"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/alex-christopher/pyoptiML"
+"Bug Tracker" = "https://github.com/alex-christopher/pyoptiML/issues"

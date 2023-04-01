@@ -5,10 +5,10 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 __version__ = "0.0.0"
 
-REPO_NAME = pyoptiML
-AUTHOR_USER_NAME = alex-christopher
-SRC_REPO = pyoptiML
-AUTHOR_EMAIL = alexchristopher154@gmail.com
+REPO_NAME = "pyoptiML"
+AUTHOR_USER_NAME = "alex-christopher"
+SRC_REPO = "pyoptiML"
+AUTHOR_EMAIL = "alexchristopher154@gmail.com"
 
 setuptools.setup(
     name=SRC_REPO,
