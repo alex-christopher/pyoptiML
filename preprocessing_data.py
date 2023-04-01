@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import os
 
-from import_file import data_cleaning
+from import_file import data_loading
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
@@ -14,13 +14,14 @@ from sklearn.ensemble import HistGradientBoostingRegressor, HistGradientBoosting
 from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, r2_score, mean_squared_error
 
+import matplotlib.pyplot as plt
 
-class preprocessing:
+
+class preprocessing_data:
     def __init__(self):
-        self.dc = data_cleaning()
+        self.dc = data_loading()
         self.df, self.file_path = self.dc.import_data()
         self.print = self.dc.print_def
-        #self.save = savefile
 
     '''def find_datatype(self):
         try:
@@ -68,7 +69,7 @@ class preprocessing:
         except Exception as e:
             print("ERROR IN CATEGORICAL TO NUMERICAL", e)
 
-    def cols_with_more_than_one_missisng_values(self):
+    def cols_with_more_than_one_missing_values(self):
         try:
             counter = 0
             self.df = self.df.reset_index(drop=True)
@@ -93,12 +94,17 @@ class preprocessing:
         except Exception as e:
             print("ERROR IN COLS WITH MORE THAN ONE MISSING VALUE", e)
 
+
+    def save_visualization(self):
+        pass
+
     def splitting_data(self):
         try:
-
-            #int_vals, float_vals = self.find_datatype()
+            # int_vals, float_vals = self.find_datatype()
             target = []
-            self.df = self.cols_with_more_than_one_missisng_values()
+            self.df = self.cols_with_more_than_one_missing_values()
+
+
             self.categorical_to_numerical()
             self.missing_value_data()
             for cols in self.null_columns:
@@ -203,7 +209,7 @@ class preprocessing:
 
                 target = []
 
-                self.cols_with_more_than_one_missisng_values()
+                self.cols_with_more_than_one_missing_values()
 
             return self.df, self.file_path
 
@@ -211,4 +217,3 @@ class preprocessing:
         except Exception as e:
             traceback.print_exc()
             print("Splitting data function", e)
-

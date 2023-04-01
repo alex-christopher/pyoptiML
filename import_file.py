@@ -1,3 +1,5 @@
+import sys
+
 import pandas as pd
 import numpy as np
 import os
@@ -10,13 +12,13 @@ window = tk.Tk()
 window.withdraw()
 window.update()
 
-text = "GENERATE MODEL"
+text = "OPTI-ML"
 ascii_art = pyfiglet.figlet_format(text, font="slant")
 terminal_width = len(ascii_art.split('\n')[0])
 ascii_art = ascii_art.center(terminal_width)
 print(ascii_art)
 
-class data_cleaning:
+class data_loading:
     def __init__(self):
         print("*"*50 +"AUTOMATED MACHINE LEARNING"+"*"*50)
 
@@ -38,11 +40,13 @@ class data_cleaning:
                     return df, self.file_path
                 window.destroy()
                 window.mainloop()
+
                 return True
 
             else:
                 print("THANK YOU")
-                return False
+                sys.exit()
+
         except Exception as e:
             print("Error occurred while importing file", e)
         finally:

@@ -1,25 +1,23 @@
 import os
+import sys
+
 import pandas as pd
 import numpy as np
-from preprocessing import preprocessing
-from import_file import data_cleaning
+from preprocessing_data import preprocessing_data
+from import_file import data_loading
 import tqdm
 import tkinter as tk
 from tkinter import filedialog
 import csv
 import pickle
 
-window = tk.Tk()
-window.withdraw()
-window.update()
 
-
-class savefile:
+class savefileas:
     def __init__(self):
-        pre = preprocessing()
+        pre = preprocessing_data()
         self.df, self.file_path = pre.splitting_data()
 
-    def csvfile(self):
+    def fixing_file_path(self):
         save_option = str(input("Do you like to save the updated dataframe in .csv format? [y/n] : "))
         if save_option.lower() == 'y':
             print(self.file_path)

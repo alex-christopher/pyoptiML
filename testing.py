@@ -1,13 +1,14 @@
 from trainingtesting import model_creation
 import pickle
 
-class testing:
+class testing_module:
 
     def __init__(self):
         model = model_creation()
-        self.x, self.y, self.generated_model, self.target = model.model_generation()
+        self.df = model.treating_outliers()
+        self.x, self.y, self.generated_model, self.target = model.final_model_generation()
 
-    def testing(self):
+    def testing_user_input(self):
         try:
             test_input = str(input("Do you like to test your model [y/n] : "))
             if test_input.lower() == 'y':

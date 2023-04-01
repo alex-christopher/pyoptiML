@@ -1,10 +1,13 @@
+import sys
+
 import numpy as np
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
 
-from import_file import data_cleaning
-from preprocessing import preprocessing
-from savefile import savefile
+from import_file import data_loading
+from preprocessing_data import preprocessing_data
+from savefile import savefileas
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -23,29 +26,59 @@ sc = StandardScaler()
 
 class model_creation:
     def __init__(self):
-        self.save = savefile()
-        self.df, self.path = self.save.csvfile()
+        self.save = savefileas()
+        self.df, self.path = self.save.fixing_file_path()
 
     def new_save(self, process, data, file_format):
-        new_save = str(input(f"Do you like to save the {process} values as {file_format} file? [y/n] : "))
-        if new_save.lower() == 'y':
+        self.save_file = str(input(f"Do you like to save the {process} as {file_format} file? [y/n] : "))
+        if self.save_file.lower() == 'y':
             folder_name = os.path.split(self.path)[1]
             if file_format == ".csv":
                 file_name = f'{process}_{folder_name}{file_format}'
                 print(file_name)
                 os.chdir(self.path)
                 csv_file = data.to_csv(file_name, index=False)
+                print(f'{process} saved')
 
             elif file_format == ".pkl":
                 self.model_file_name = f'{process}_{folder_name}{file_format}'
                 pickle.dump(data, open(self.model_file_name, 'wb'))
                 print('MODEL IS BEING SAVED...')
                 print("MODEL SAVED")
-            else:
-                print("File NOT SAVED")
 
+            elif file_format == ".jpg":
+                plt.imsave(f'{process}_{data}{file_format}', data)
+            else:
+                print("FILE NOT SAVED")
+                sys.exit()
+        else:
+            print("FILE NOT SAVED")
+
+    def visualization(self, column, process):
+        hist = plt.hist(self.df[column])
+        plt.imsave(f'Before_Outliers{column}.jpg', hist)
+        box = plt.box(self.df[column])
+        self.new_save(process, box, ".jpg")
+
+    def treating_outliers(self):
+        try:
+            for i in self.df.columns:
+                Q1 = self.df[i].quantile(.25)
+                Q3 = self.df[i].quantile(.75)
+                IQR = Q3 - Q1
+                lower = Q1 - 1.5 * IQR
+                upper = Q3 + 1.5 * IQR
+                print(f"LOWER LIMIT FOR {i} : ", round(lower, 2))
+                print(f"UPPER LIMIT FOR {i} : ", round(upper, 2))
+
+                self.df[i] = np.where(self.df[i] > upper, upper,
+                                      np.where(self.df[i] < lower, lower, self.df[i]))
+            return self.df
+        except Exception as e:
+            print("ERROR IN REMOVING OUTLIERS", e)
 
     def train_test_split_(self):
+        #self.df = self.treating_outliers()
         for i in self.df.columns:
             print(i)
         while True:
@@ -60,13 +93,13 @@ class model_creation:
                 train_data = pd.DataFrame(training_data)
                 testing_data = pd.concat([self.x_test, self.y_test], axis=1)
                 test_data = pd.DataFrame(testing_data)
-                self.new_save("Train", train_data, ".csv")
-                print("Train data saved")
-                self.new_save("Test", test_data, ".csv")
-                print("Test data saved")
+                self.new_save("Train values", train_data, ".csv")
+                # print("Train data saved")
+                self.new_save("Test values", test_data, ".csv")
+                # print("Test data saved")
                 break
             else:
-                print("Enter proper column name")
+                print("Enter the appropriate column name")
 
         return x, y, target
 
@@ -76,6 +109,7 @@ class model_creation:
         self.new_save("Standardized", standard, ".csv")
 
     def validation_model_generation(self):
+
         self.standardization()
         x_train = sc.fit_transform(self.x_train)
         x_test = sc.transform(self.x_test)
@@ -118,20 +152,24 @@ class model_creation:
         print("BEST MODEL : ", suggest_model)
         return greatest_index, best_model
 
-    def model_generation(self):
-        x, y, target = self.train_test_split_()
-        index_values, validation = self.validation_model_generation()
-        GradBoost = GradientBoostingRegressor(loss='squared_error',
-                                              learning_rate=0.1,
-                                              n_estimators=100,
-                                              random_state=42)
-        LinearReg = LinearRegression()
-        RidgeReg = Ridge()
-        ElasticNetReg = ElasticNet()
-        LassoReg = Lasso()
+    def final_model_generation(self):
+        try:
+            x, y, target = self.train_test_split_()
+            index_values, validation = self.validation_model_generation()
+            GradBoost = GradientBoostingRegressor(loss='squared_error',
+                                                  learning_rate=0.1,
+                                                  n_estimators=100,
+                                                  random_state=42)
+            LinearReg = LinearRegression()
+            RidgeReg = Ridge()
+            ElasticNetReg = ElasticNet()
+            LassoReg = Lasso()
 
-        new_model = validation.fit(x, y.values.ravel())
-        self.new_save("Model", new_model, ".pkl")
-
-        return x, y, self.model_file_name, target
-
+            new_model = validation.fit(x, y.values.ravel())
+            self.new_save("Model", new_model, ".pkl")
+            if self.save_file.lower() == 'y':
+                return x, y, self.model_file_name, target
+            else:
+                return x, y, new_model, target
+        except Exception as e:
+            print("ERROR AT MODEL GENERATION", e)
