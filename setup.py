@@ -9,7 +9,6 @@ REPO_NAME = "pyoptiML"
 AUTHOR_USER_NAME = "alex-christopher"
 SRC_REPO = "pyoptiML"
 AUTHOR_EMAIL = "alexchristopher154@gmail.com"
-
 setuptools.setup(
     name=SRC_REPO,
     version=__version__,
@@ -17,7 +16,7 @@ setuptools.setup(
     author_email=AUTHOR_EMAIL,
     description="A Machine Learning python package that can be used to generate model",
     long_description=long_description,
-    long_description_content="text/markdown",
+    long_description_content_type="text/markdown",
     url=f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}",
     project_urls={
         "Bug Tracker": f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}/issues",
