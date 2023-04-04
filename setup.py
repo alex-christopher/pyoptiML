@@ -9,6 +9,7 @@ REPO_NAME = "pyoptiML"
 AUTHOR_USER_NAME = "alex-christopher"
 SRC_REPO = "pyoptiML"
 AUTHOR_EMAIL = "alexchristopher154@gmail.com"
+
 setuptools.setup(
     name=SRC_REPO,
     version=__version__,
