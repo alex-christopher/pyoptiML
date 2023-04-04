@@ -7,9 +7,10 @@ Author: alex-christopher
 Author-email: alexchristopher154@gmail.com
 License: MIT
 Project-URL: Bug Tracker, https://github.com/alex-christopher/pyoptiML/issues
-Classifier: Programming Language :: Python :: 3.7
 Classifier: Programming Language :: Python :: 3.8
 Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.7
 Provides-Extra: testing
