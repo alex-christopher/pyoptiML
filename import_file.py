@@ -26,7 +26,7 @@ class data_loading:
     def import_data(self):
         try:
             import_file = input("Import file [y/n] : ")
-            if import_file.lower() == 'y':
+            if import_file.lower()[0] == 'y':
                 file_dialog_box = fd.askopenfile(
                     filetypes=[("CSV file", "*.csv"), ("Excel file", "*.xlsx"), ("Excel file", "*.xls")])
                 self.file_path, file_ext = os.path.splitext(file_dialog_box.name)

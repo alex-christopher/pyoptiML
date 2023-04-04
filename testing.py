@@ -11,7 +11,7 @@ class testing_module:
     def testing_user_input(self):
         try:
             test_input = str(input("Do you like to test your model [y/n] : "))
-            if test_input.lower() == 'y':
+            if test_input.lower()[0] == 'y':
                 append_values = []
                 for i in self.x.columns:
                     values = float(input(f"Enter the value for {i} : "))

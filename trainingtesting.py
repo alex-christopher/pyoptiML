@@ -31,7 +31,7 @@ class model_creation:
 
     def new_save(self, process, data, file_format):
         self.save_file = str(input(f"Do you like to save the {process} as {file_format} file? [y/n] : "))
-        if self.save_file.lower() == 'y':
+        if self.save_file.lower()[0] == 'y':
             folder_name = os.path.split(self.path)[1]
             if file_format == ".csv":
                 file_name = f'{process}_{folder_name}{file_format}'

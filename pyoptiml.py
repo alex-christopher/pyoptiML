@@ -10,4 +10,3 @@ class pyoptiML:
         end = time.time()
         print("------%s seconds------ " % (round(end - start, 2)))
 
-optiml = pyoptiML()

@@ -19,7 +19,7 @@ class savefileas:
 
     def fixing_file_path(self):
         save_option = str(input("Do you like to save the updated dataframe in .csv format? [y/n] : "))
-        if save_option.lower() == 'y':
+        if save_option.lower()[0] == 'y':
             print(self.file_path)
             folder_path = os.path.split(self.file_path)[0]
             folder_name = os.path.split(self.file_path)[1]
