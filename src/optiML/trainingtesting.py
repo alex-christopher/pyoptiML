@@ -33,7 +33,7 @@ class model_creation:
                 file_name = f'{process}_{folder_name}{file_format}'
                 print(file_name)
                 os.chdir(self.path)
-                csv_file = data.to_csv(file_name, index=False)
+                data.to_csv(file_name, index=False)
                 print(f'{process} saved')
 
             elif file_format == ".pkl":
@@ -74,7 +74,7 @@ class model_creation:
             print("ERROR IN REMOVING OUTLIERS", e)
 
     def train_test_split_(self):
-        #self.df = self.treating_outliers()
+        # self.df = self.treating_outliers()
         for i in self.df.columns:
             print(i)
         while True:
@@ -152,14 +152,6 @@ class model_creation:
         try:
             x, y, target = self.train_test_split_()
             index_values, validation = self.validation_model_generation()
-            GradBoost = GradientBoostingRegressor(loss='squared_error',
-                                                  learning_rate=0.1,
-                                                  n_estimators=100,
-                                                  random_state=42)
-            LinearReg = LinearRegression()
-            RidgeReg = Ridge()
-            ElasticNetReg = ElasticNet()
-            LassoReg = Lasso()
 
             new_model = validation.fit(x, y.values.ravel())
             self.new_save("Model", new_model, ".pkl")

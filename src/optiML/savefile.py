@@ -1,14 +1,5 @@
 import os
-import sys
-
-import pandas as pd
-import numpy as np
 from preprocessing_data import preprocessing_data
-from import_file import data_loading
-import tqdm
-import tkinter as tk
-from tkinter import filedialog
-import csv
 import pickle
 
 
@@ -35,12 +26,12 @@ class savefileas:
                     break
                 i += 1
 
-            #os.mkdir(complete_path)
+            # os.mkdir(complete_path)
             csv_path = f'Preprocessed_{folder_name}.csv'
             print(csv_path)
 
             os.chdir(complete_path)
-            csv_file = self.df.to_csv(csv_path, index=False)
+            self.df.to_csv(csv_path, index=False)
             print("SAVED")
             return self.df, complete_path
         else:
@@ -55,4 +46,3 @@ class savefileas:
         else:
             print("MODEL NOT SAVED")
         return
-

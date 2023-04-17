@@ -1,20 +1,13 @@
-import re
 import traceback
 
 import pandas as pd
 import numpy as np
-import os
 
 from import_file import data_loading
 
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Ridge
-from sklearn.ensemble import HistGradientBoostingRegressor, HistGradientBoostingClassifier
-from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
-from sklearn.metrics import accuracy_score, r2_score, mean_squared_error
-
-import matplotlib.pyplot as plt
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.metrics import r2_score, mean_squared_error
 
 
 class preprocessing_data:
@@ -43,7 +36,6 @@ class preprocessing_data:
             self.null_columns = self.df.columns[self.df.isna().any()]
             if not self.null_columns.empty:
                 for i in self.null_columns:
-                    sum_of_missing_values = self.df[i].isna().sum()
                     # print("NO OF MISSING VALUES : ", sum_of_missing_values)
                     print("No of missing values in '{}' : ".format(i), self.df[i].isna().sum())
 
@@ -94,7 +86,6 @@ class preprocessing_data:
         except Exception as e:
             print("ERROR IN COLS WITH MORE THAN ONE MISSING VALUE", e)
 
-
     def save_visualization(self):
         pass
 
@@ -103,7 +94,6 @@ class preprocessing_data:
             # int_vals, float_vals = self.find_datatype()
             target = []
             self.df = self.cols_with_more_than_one_missing_values()
-
 
             self.categorical_to_numerical()
             self.missing_value_data()
@@ -168,7 +158,7 @@ class preprocessing_data:
                 GBR_Pred = modelGBR.predict(x_val_test)
                 R2_score = r2_score(y_val_test, GBR_Pred)
                 mse = mean_squared_error(y_val_test, GBR_Pred)
-                print("R2 : ", R2_score, "\nGBR : ", GBR_Pred)
+                print("R2 : ", R2_score, "\nGBR : ", GBR_Pred, "\nMSE : ", mse)
 
                 if R2_score > 0.8:
                     print("MODEL FITTED WELL AND GOOD")
@@ -212,7 +202,6 @@ class preprocessing_data:
                 self.cols_with_more_than_one_missing_values()
 
             return self.df, self.file_path
-
 
         except Exception as e:
             traceback.print_exc()
