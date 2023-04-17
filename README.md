@@ -9,8 +9,8 @@ Things that automate_ml does:
 1. Importing the data - is way easier now, you can just select the file from the path not to copy the path and paste them to make them run.
 2. Preprocessing - It fills the nan values / NA values /  empty values on its own not with mean median or mode alternatively it uses prediction algorithm to predict the missing values. 
 Reasons : 
-   Rather than filling with mean, median or mode values this could help to fill the empty values more accurately.
-   Model with the best accuracy will be used to fill the nan values and so the accuracy increases in filling the missing values
+Rather than filling with mean, median or mode values this could help to fill the empty values more accurately.
+Model with the best accuracy will be used to fill the nan values and so the accuracy increases in filling the missing values
 3. Saving - Saving the files is the most important feature that has been processed. This package asks for yes or no kinda questions to save train data, test data, standardized data and even the model everything will be saved in a new folder that is created from where the data has been selected.
 4. Handled outliers with the help of IQR (Interquaratile Range)
 5. Numerical data are stored in csv files
