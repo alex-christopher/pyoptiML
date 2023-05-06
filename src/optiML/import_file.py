@@ -24,6 +24,10 @@ class data_loading:
         print("*" * 50 + "OPTI ML" + "*" * 50)
 
     def import_data(self):
+        """
+        Asks for yes of no question to import a csv or excle file
+        :return: True or False
+        """
         try:
             import_file = input("Import file [y/n] : ")
             if import_file.lower()[0] == 'y':
@@ -56,4 +60,10 @@ class data_loading:
             # window.mainloop()
 
     def print_def(self, text, data=None):
+        """
+        Printing a line with asterisks
+        :param text: Text that is to be inserted within the asterisks
+        :param data: None
+        :return: The line with asterisks
+        """
         print("*" * 50 + text + "*" * 50)

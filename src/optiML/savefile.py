@@ -1,11 +1,11 @@
 import os
-from preprocessing_data import preprocessing_data
+from preprocessing_data import Standard_preprocessing_data
 import pickle
 
 
 class savefileas:
     def __init__(self):
-        pre = preprocessing_data()
+        pre = Standard_preprocessing_data()
         self.df, self.file_path = pre.splitting_data()
 
     def fixing_file_path(self):

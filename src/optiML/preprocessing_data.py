@@ -10,7 +10,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import r2_score, mean_squared_error
 
 
-class preprocessing_data:
+class Standard_preprocessing_data:
     def __init__(self):
         self.dc = data_loading()
         self.df, self.file_path = self.dc.import_data()
@@ -31,6 +31,10 @@ class preprocessing_data:
             print("Error occurred in find_datatype function", e)'''
 
     def missing_value_data(self):
+        """
+        This function gets the number of missing values in the every column
+        :return: Missing values
+        """
         # int_vals, float_vals = self.find_datatype()
         try:
             self.null_columns = self.df.columns[self.df.isna().any()]
@@ -45,6 +49,10 @@ class preprocessing_data:
             print("Missing value function", e)
 
     def categorical_to_numerical(self):
+        """
+        This function converts all the categorical features into numerical features by creating dummies
+        :return:
+        """
         try:
             categorical_cols = self.df.select_dtypes(include='object')
             numerical_cols = self.df.select_dtypes(exclude='object')
@@ -62,6 +70,10 @@ class preprocessing_data:
             print("ERROR IN CATEGORICAL TO NUMERICAL", e)
 
     def cols_with_more_than_one_missing_values(self):
+        """
+        This function drops all the rows that contains more than one missing values considering the worst case scenario
+        :return: New dataframe self.df
+        """
         try:
             counter = 0
             self.df = self.df.reset_index(drop=True)
@@ -90,6 +102,11 @@ class preprocessing_data:
         pass
 
     def splitting_data(self):
+        """
+        This function splits all the data as training and testing to fill the NA values
+        The NA values are considered as the testing data and the model is prepared with XGBoost Regressor to fill in the values
+        :return: New Dataframe self.df, File path from where the data is fetched self.file_path
+        """
         try:
             # int_vals, float_vals = self.find_datatype()
             target = []
@@ -206,3 +223,34 @@ class preprocessing_data:
         except Exception as e:
             traceback.print_exc()
             print("Splitting data function", e)
+
+class Expert_preprocessing_data:
+    def __int__(self):
+        self.dc = data_loading()
+        self.df, self.file_path = self.dc.import_data()
+        self.print = self.dc.print_def
+    def find_datatypes(self, data):
+        try:
+            if data:
+                float_values = data.select_dtypes(include=["float"])
+                integer_values = data.select_dtypes(include=["int"])
+                date_pattern = r'\d{4}-\d{2}-\d{2}'
+                return float_values, integer_values
+        finally:
+            print("Segregated with datatypes")
+
+    def fill_missing_values(self):
+        missing_vals = ["Mean", "Median", "Mode", "Prediction", "Drop Missing value"]
+        for i in missing_vals:
+            print(i)
+        while True:
+            missing_vals_input = str(input("Enter the method to fill the missing values : "))
+            if missing_vals_input in missing_vals:
+                if missing_vals.lower() == "mean":
+                    for i in self.df.columns:
+                        self.df[i].fillna(method="mean", inplace=True)
+
+
+
+
+

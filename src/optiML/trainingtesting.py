@@ -26,6 +26,13 @@ class model_creation:
         self.df, self.path = self.save.fixing_file_path()
 
     def new_save(self, process, data, file_format):
+        '''
+        This function in general is used to save the file or data in a particular format
+        :param process: Standardization, testing, training etc.
+        :param data: The data that has to be saved
+        :param file_format: pkl format for models and csv for numerical data and jpg for visualization
+        :return:
+        '''
         self.save_file = str(input(f"Do you like to save the {process} as {file_format} file? [y/n] : "))
         if self.save_file.lower()[0] == 'y':
             folder_name = os.path.split(self.path)[1]
@@ -57,6 +64,10 @@ class model_creation:
         self.new_save(process, box, ".jpg")
 
     def treating_outliers(self):
+        '''
+        This function treats the outliers with Interquaratile range 25% for the minimum value and 75% for maximum value
+        :return: self.df The updated new dataframe
+        '''
         try:
             for i in self.df.columns:
                 Q1 = self.df[i].quantile(.25)
@@ -74,6 +85,10 @@ class model_creation:
             print("ERROR IN REMOVING OUTLIERS", e)
 
     def train_test_split_(self):
+        """
+        This function in splits the data for training and testing
+        :return: New updated dataframe self.df
+        """
         # self.df = self.treating_outliers()
         for i in self.df.columns:
             print(i)
@@ -105,7 +120,10 @@ class model_creation:
         self.new_save("Standardized", standard, ".csv")
 
     def validation_model_generation(self):
-
+        """
+        This function creates a validation model that can be used to check which model fits well and that can be suggested to the user
+        :return: Least MSE value as the greatest index and model as the best model will be suggested
+        """
         self.standardization()
         x_train = sc.fit_transform(self.x_train)
         x_test = sc.transform(self.x_test)
@@ -149,6 +167,13 @@ class model_creation:
         return greatest_index, best_model
 
     def final_model_generation(self):
+        """
+        This function will generate the real model that can be reused
+        :return:  x values as x
+                  y values as y
+                  model as model_file_name
+                  target as target for cross checking purposes
+        """
         try:
             x, y, target = self.train_test_split_()
             index_values, validation = self.validation_model_generation()
