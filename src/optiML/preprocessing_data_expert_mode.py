@@ -19,7 +19,8 @@ class expert_preprocessing:
                 float_values = self.df.select_dtypes(include=["float"])
                 integer_values = self.df.select_dtypes(include=["int"])
                 date_pattern = r'\d{4}-\d{2}-\d{2}'
-                if self.df
+                if self.df:
+                    pass
                 return float_values, integer_values
         finally:
             print("Segregated with datatypes")
